@@ -10,15 +10,17 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <ScrollView
+        android:id="@+id/messagesScroll"
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight="1">
 
         <TextView
             android:id="@+id/messages"
-            android:text="@string/hello_world"
+            android:text=""
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="bottom"/>
 
     </ScrollView>
 

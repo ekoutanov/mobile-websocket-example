@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.java_websocket.client.WebSocketClient;
@@ -39,7 +40,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -67,7 +68,7 @@ public class MainActivity extends Activity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
@@ -76,7 +77,7 @@ public class MainActivity extends Activity {
     private void connectWebSocket() {
         URI uri;
         try {
-            uri = new URI("ws://websockethost:8080");
+            uri = new URI("ws://172.30.0.41:8080/beacon");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -86,7 +87,7 @@ public class MainActivity extends Activity {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.i("Websocket", "Opened");
-                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+                //mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
             }
 
             @Override
@@ -95,8 +96,10 @@ public class MainActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textView = (TextView)findViewById(R.id.messages);
+                        final TextView textView = (TextView) findViewById(R.id.messages);
                         textView.setText(textView.getText() + "\n" + message);
+                        final ScrollView scrollView = (ScrollView) findViewById(R.id.messagesScroll);
+                        scrollView.fullScroll(View.FOCUS_DOWN);
                     }
                 });
             }
@@ -115,7 +118,7 @@ public class MainActivity extends Activity {
     }
 
     public void sendMessage(View view) {
-        EditText editText = (EditText)findViewById(R.id.message);
+        EditText editText = (EditText) findViewById(R.id.message);
         mWebSocketClient.send(editText.getText().toString());
         editText.setText("");
     }
